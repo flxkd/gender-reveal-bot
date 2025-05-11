@@ -1,0 +1,26 @@
+{
+  "name": "gender-reveal-bot",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/flxkd/gender-reveal-bot.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/flxkd/gender-reveal-bot/issues"
+  },
+  "homepage": "https://github.com/flxkd/gender-reveal-bot#readme",
+  "description": "",
+  "dependencies": {
+    "dotenv": "^16.5.0",
+    "pg": "^8.15.6",
+    "qrcode": "^1.5.4",
+    "telegraf": "^4.16.3"
+  }
+}
