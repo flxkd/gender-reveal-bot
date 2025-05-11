@@ -33,4 +33,8 @@ bot.command('create', async (ctx) => {
   await ctx.reply(`🎉 Событие создано!\nСсылка: ${link}`);
 });
 
-bot.launch();
+bot.catch((err, ctx) => {
+    console.error(`❗ Бот упал при обработке обновления ${ctx.updateType}`, err);
+  });
+
+bot.launch().then(() => console.log('🤖 Бот запущен!'));

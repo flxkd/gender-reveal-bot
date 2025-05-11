@@ -2,11 +2,11 @@
   "name": "gender-reveal-bot",
   "version": "1.0.0",
   "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "migrate": "node db/migrate.js",
-    "start": "node bot/index.js"
-  },
+"scripts": {
+  "migrate": "node db/migrate.js",
+  "start:api": "node api/index.js",
+  "start:bot": "node bot/index.js"
+},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/flxkd/gender-reveal-bot.git"

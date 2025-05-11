@@ -1,25 +1,40 @@
-require('dotenv').config();
 const express = require('express');
+require('dotenv').config();
 const { Client } = require('pg');
+
 const app = express();
-const db =new Client({
-    connectionString: process.env.DATABASE_URL,
-    ssl: {
-      rejectUnauthorized: false // нужно для Render
-    }
-  });
-db.connect();
+const port = process.env.PORT || 3000;
 
-app.get('/party/:id/state', async (req, res) => {
-  const { id } = req.params;
-  const result = await db.query(`SELECT gender, reveal_time FROM parties WHERE id = $1`, [id]);
-  if (!result.rows.length) return res.status(404).send('Not found');
-
-  const { gender, reveal_time } = result.rows[0];
-  const now = new Date();
-  res.send({ state: now >= reveal_time ? gender : 'closed' });
+const db = new Client({
+  connectionString: process.env.DATABASE_URL,
+  ssl: { rejectUnauthorized: false }
 });
 
-app.listen(process.env.PORT || 3000, () => {
-  console.log('API started');
+db.connect().then(() => console.log('✅ Подключение к БД успешно'));
+
+app.get('/party/:id/state', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const result = await db.query(
+      `SELECT gender, reveal_time FROM parties WHERE id = $1`,
+      [id]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: 'Party not found' });
+    }
+
+    const { gender, reveal_time } = result.rows[0];
+    const now = new Date();
+    res.json({
+      state: now >= new Date(reveal_time) ? gender : 'closed'
+    });
+  } catch (err) {
+    console.error('Ошибка при получении состояния вечеринки:', err);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+app.listen(port, () => {
+  console.log(`🌐 API запущено на http://localhost:${port}`);
 });
